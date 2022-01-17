@@ -12,12 +12,13 @@ The name of the archive created must be
 The function do_pack must return the archive path if the archive has been
 correctly generated. Otherwise, it should return None"""
 from fabric.api import local
-import datetime
+from datetime import datetime
 
 
 def do_pack():
     """Generates a .tgz archive from the contents
     of the web_static folder of your AirBnB Clone repo"""
+    from os import mkdir, path
 
     now = datetime.now()
     filename = "web_static_{}.tgz".format(now.strftime("%Y%m%d%H%M%S"))
@@ -28,8 +29,7 @@ def do_pack():
     except FileExistsError:
         pass
 
-    print("Packing web_static to {}".format(filepath))
-    cmd = local('tar -cvzf {} web_static'.format(filepath))
-    if (cmd.return_code == 0):
-        return filepath
-    return None
+    create_file = local("tar -cvzf {} web_static".format(filepath))
+    if create_file.failed:
+        return None
+    return filepath
