@@ -12,12 +12,14 @@ class State(BaseModel, Base):
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
 
-    cities = relationship("City", backref="state")
+    if models.env == 'db':
+        cities = relationship("City", backref="state")
+    else:
     @property
-    def cities(self):
-        city_dict = models.storage.all(City)
-        city_list = []
-        for key, value in city_dict.items():
-            if value.state_id == self.id:
-                city_list.append(value)
-        return city_list
+        def cities(self):
+            city_dict = models.storage.all(City)
+            city_list = []
+            for key, value in city_dict.items():
+                if value.state_id == self.id:
+                    city_list.append(value)
+            return city_list

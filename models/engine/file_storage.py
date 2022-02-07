@@ -64,3 +64,7 @@ class FileStorage:
             if value != obj:
                 FileStorage.__objects = {key: value}
         self.save()
+
+    def close(self):
+        """Closes connection"""
+        self.reload()
