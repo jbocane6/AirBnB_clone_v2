@@ -14,8 +14,9 @@ class State(BaseModel, Base):
 
     if models.env == 'db':
         cities = relationship("City", backref="state")
+
     else:
-    @property
+        @property
         def cities(self):
             city_dict = models.storage.all(City)
             city_list = []
